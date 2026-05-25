@@ -163,20 +163,22 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="entry.cpp">
+    <ClCompile Include="application.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">pch.hpp</PrecompiledHeaderFile>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">pch.hpp</PrecompiledHeaderFile>
     </ClCompile>
+    <ClCompile Include="dumper.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="dumper-utils.hpp" />
-    <ClInclude Include="dumper\macros.hpp" />
-    <ClInclude Include="il2cpp\routines.hpp" />
-    <ClInclude Include="il2cpp\il2cpp-types.hpp" />
-    <ClInclude Include="il2cpp\utils.hpp" />
-    <ClInclude Include="dumper\pch.hpp" />
+    <ClInclude Include="dumper.hpp" />
+    <ClInclude Include="macros.hpp" />
+    <ClInclude Include="il2cpp-helpers.hpp" />
+    <ClInclude Include="il2cpp-exports.hpp" />
+    <ClInclude Include="il2cpp-types.hpp" />
+    <ClInclude Include="utilities.hpp" />
+    <ClInclude Include="pch.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

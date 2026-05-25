@@ -15,27 +15,33 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="entry.cpp">
+    <ClCompile Include="application.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="dumper.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="dumper-utils.hpp">
+    <ClInclude Include="dumper.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="il2cpp\routines.hpp">
+    <ClInclude Include="il2cpp-exports.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="il2cpp\utils.hpp">
+    <ClInclude Include="utilities.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="dumper\pch.hpp">
+    <ClInclude Include="pch.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="dumper\macros.hpp">
+    <ClInclude Include="macros.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="il2cpp\il2cpp-types.hpp">
+    <ClInclude Include="il2cpp-types.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="il2cpp-helpers.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

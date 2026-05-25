@@ -1,19 +1,42 @@
 #include <pch.hpp>
 
-void gather_modules();
-void setup_console_output();
+using namespace rust;
+
+void dump_offsets()
+{
+	BEGIN_NAMESPACE("offsets");
+	{
+		base_player::generate();
+	}
+	END_NAMESPACE;
+}
 
 bool init_dumper()
 {
-	using namespace dumper;
+	// init il2cpp runtime routines
+	{
+		il2cpp_exports::init();
+		il2cpp::thread_attach();
+	}
 
-	il2cpp_exports::init();
+	assembly_csharp = il2cpp::get_image("Assembly-CSharp.dll");
+	if (!assembly_csharp)
+	{
+		console->error("Failed to retrieve Assembly-CSharp.dll");
+		return false;
+	}
+
+	dump_offsets();
+
+#ifdef _DEBUG
+	generator::show_output();
+#endif
 
 	return true;
 }
 
-#include <thread>
-#include <chrono>
+void gather_modules();
+void setup_console_output();
 
 int __stdcall DllMain(HMODULE main_mod, unsigned long reason, void* instance)
 {
@@ -53,7 +76,7 @@ void gather_modules()
 			std::this_thread::sleep_for(std::chrono::milliseconds(500));
 		}
 
-		dumper::modules[name] = reinterpret_cast<HMODULE>(module);
+		rust::modules[name] = reinterpret_cast<HMODULE>(module);
 	}
 }
 
@@ -64,5 +87,5 @@ void setup_console_output()
 	FILE* fout = nullptr;
 	freopen_s(&fout, "CONOUT$", "w", stdout);
 
-	dumper::setup_logger();
+	rust::setup_logger();
 }
