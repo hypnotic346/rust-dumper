@@ -4,11 +4,16 @@ using namespace rust;
 
 void dump_offsets()
 {
-	BEGIN_NAMESPACE("offsets");
+	BEGIN_NAMESPACE(offsets);
 	{
+		ADD_FIELD_MEMBER(offsets, "static_fields", 0xb8);	
+		
 		base_player::generate();
+		base_networkable::generate();
+		base_entity::generate();
+		main_camera::generate();
 	}
-	END_NAMESPACE;
+	END_NAMESPACE(offsets);
 }
 
 bool init_dumper()
@@ -16,20 +21,25 @@ bool init_dumper()
 	// init il2cpp runtime routines
 	{
 		il2cpp_exports::init();
+		console->debug("Initialized IL2CPP routines");
+
 		il2cpp::thread_attach();
+		console->debug("Thread attached to VM domain");
 	}
 
 	assembly_csharp = il2cpp::get_image("Assembly-CSharp.dll");
 	if (!assembly_csharp)
 	{
-		console->error("Failed to retrieve Assembly-CSharp.dll");
+		throw std::runtime_error("Failed to retrieve module.");
 		return false;
 	}
+
+	rust::cpp_codegen = std::make_shared<cppgen::codeblock>();
 
 	dump_offsets();
 
 #ifdef _DEBUG
-	generator::show_output();
+	rust::cpp_codegen->dump();
 #endif
 
 	return true;
@@ -47,7 +57,6 @@ int __stdcall DllMain(HMODULE main_mod, unsigned long reason, void* instance)
 
 	if (!status)
 	{
-		spdlog::error("Failed to process dumper");
 		return FALSE;
 	}
 

@@ -1,94 +1,137 @@
 #include <pch.hpp>
 
-#define BREAK_LINE rust::generator::new_line()
-
-#define GENERATE_FIELD_MEMBER_BY_FIELD_CLASS(base_klass, klass_name, name)      \
-    current_field = il2cpp::get_field_from_field_class(base_klass, klass_name); \
-    DEFINE_FIELD(name, current_field->offset);                                  \
-    ADD_COMMENT(il2cpp_exports::il2cpp_type_get_name(current_field->type));     \
-    BREAK_LINE;
-
-namespace rust::base_player
+namespace rust
 {
-    void generate()
+    using namespace il2cpp_exports;
+
+    [[noexcept]] std::uintptr_t get_typeinfo_for_klass(const Il2CppClass* klass)
     {
-        Il2CppClass *klass = GET_CLASS("BasePlayer");
-        if (!klass) return;
+        std::uintptr_t typeinfo = memory::find_field_ptr(klass);
 
+        if (typeinfo == 0u)
         {
-            FieldInfo *current_field{ nullptr };
+            return 0u;
+        }
 
-            BEGIN_NAMESPACE("base_player");
+        std::uintptr_t typeinfo_rva = typeinfo - reinterpret_cast<std::uintptr_t>(rust::modules["GameAssembly.dll"]);
 
-            GENERATE_FIELD_MEMBER_BY_FIELD_CLASS(klass, "PlayerEyes", "eyes");
-            GENERATE_FIELD_MEMBER_BY_FIELD_CLASS(klass, "PlayerInventory", "inventory");
-            GENERATE_FIELD_MEMBER_BY_FIELD_CLASS(klass, "PlayerModel", "player_model");
-            GENERATE_FIELD_MEMBER_BY_FIELD_CLASS(klass, "PlayerInput", "input");
-            GENERATE_FIELD_MEMBER_BY_FIELD_CLASS(klass, "BaseMovement", "movement");
-            GENERATE_FIELD_MEMBER_BY_FIELD_CLASS(klass, "BaseCollision", "collision");
-            GENERATE_FIELD_MEMBER_BY_FIELD_CLASS(klass, "PlayerFlags", "player_flags");
+        return typeinfo_rva;
+    }
 
-            END_NAMESPACE;
+    namespace base_networkable
+    {
+        DEFINE_FIELD_OFFSET(prefab_id);
+        DEFINE_FIELD_OFFSET(network_range);
+        DEFINE_FIELD_OFFSET(entity_list);
+        DEFINE_FIELD_OFFSET(prefab_name);
+
+        void generate()
+        {
+            Il2CppClass* klass = GET_CLASS("BaseNetworkable");
+            if (!klass) return;
+
+            BEGIN_NAMESPACE(base_networkable_static_fields);
+            {
+                const Il2CppClass* inner_klass = il2cpp::get_inner_static_class(klass);
+                if (inner_klass != nullptr)
+                {
+                    const std::uintptr_t typeinfo_ptr = get_typeinfo_for_klass(inner_klass);
+
+                    if (typeinfo_ptr != 0ull)
+                    {
+                        ADD_FIELD_MEMBER(base_networkable_static_fields, "typeinfo", typeinfo_ptr);
+                    }
+                }
+            }
+            END_NAMESPACE(base_networkable_static_fields);
+
+            BEGIN_NAMESPACE(base_networkable);
+            {
+                GENERATE_FIELD_MEMBER_BY_NAME(base_networkable, prefab_id, "prefabID", "prefab_id");
+                GENERATE_FIELD_MEMBER_BY_NAME(base_networkable, network_range, "networkRange", "network_range");
+                GENERATE_FIELD_MEMBER_BY_FIELD_CLASS(base_networkable, entity_list, "BaseEntity", "entity_list", FIELD_ATTRIBUTE_PUBLIC);
+                GENERATE_FIELD_MEMBER_BY_FIELD_CLASS(base_networkable, prefab_name, "System.String", "prefab_name", FIELD_ATTRIBUTE_PRIVATE);
+            }
+            END_NAMESPACE(base_networkable);
         }
     }
-}
 
-namespace rust::generator
-{
-	void clear()
-	{
-		buffer.clear();
-	}
-
-    bool should_add_new_line{ false };
-    int depth{ 0 };
-
-    void new_line()
+    namespace base_player
     {
-        buffer << '\n';
+        DEFINE_FIELD_OFFSET(eyes);
+        DEFINE_FIELD_OFFSET(inventory);
+        DEFINE_FIELD_OFFSET(player_model);
+        DEFINE_FIELD_OFFSET(input);
+        DEFINE_FIELD_OFFSET(movement);
+        DEFINE_FIELD_OFFSET(collision);
+        DEFINE_FIELD_OFFSET(player_flags);
+        DEFINE_FIELD_OFFSET(display_name);
+
+        void generate()
+        {
+            Il2CppClass* klass = GET_CLASS("BasePlayer");
+            if (!klass) return;
+
+            BEGIN_NAMESPACE(base_player);
+            {
+                GENERATE_FIELD_MEMBER_BY_FIELD_CLASS(base_player, eyes, "PlayerEyes", "eyes");
+                GENERATE_FIELD_MEMBER_BY_FIELD_CLASS(base_player, inventory, "PlayerInventory", "inventory");
+                GENERATE_FIELD_MEMBER_BY_FIELD_CLASS(base_player, player_model, "PlayerModel", "player_model");
+                GENERATE_FIELD_MEMBER_BY_FIELD_CLASS(base_player, input, "PlayerInput", "input");
+                GENERATE_FIELD_MEMBER_BY_FIELD_CLASS(base_player, movement, "BaseMovement", "movement");
+                GENERATE_FIELD_MEMBER_BY_FIELD_CLASS(base_player, collision, "BaseCollision", "collision");
+                GENERATE_FIELD_MEMBER_BY_FIELD_CLASS(base_player, player_flags, "PlayerFlags", "player_flags");
+                GENERATE_FIELD_MEMBER_BY_FIELD_CLASS(base_player, display_name, "System.String", "display_name", FIELD_ATTRIBUTE_FAMILY);
+            }
+            END_NAMESPACE(base_player);
+        }
     }
 
-    void indent()
+    namespace base_entity
     {
-        for (int i = 0; i < depth; ++i)
-            buffer << '\t';
+        DEFINE_FIELD_OFFSET(model);
+        DEFINE_FIELD_OFFSET(bounds);
+        DEFINE_FIELD_OFFSET(flags);
+
+        void generate()
+        {
+            Il2CppClass* klass = GET_CLASS("BaseEntity");
+            if (!klass) return;
+
+            BEGIN_NAMESPACE(base_entity);
+            {
+                GENERATE_FIELD_MEMBER_BY_FIELD_CLASS(base_entity, model, "Model", "model");
+                GENERATE_FIELD_MEMBER_BY_FIELD_CLASS(base_entity, bounds, "Bounds", "bounds");
+                GENERATE_FIELD_MEMBER_BY_FIELD_CLASS(base_entity, flags, "Flags", "flags");
+            }
+            END_NAMESPACE(base_entity);
+        }
     }
 
-    void begin_namespace(const std::string& name)
+    namespace main_camera
     {
-        indent();
-        buffer << "namespace " << name;
-        new_line();
-        indent();
-        buffer << "{";
-        new_line();
-        ++depth;
+        DEFINE_FIELD_OFFSET(instance);
+        DEFINE_FIELD_OFFSET(camera_transform);
+
+        void generate()
+        {
+            Il2CppClass* klass = GET_CLASS("MainCamera");
+            if (!klass) return;
+
+            BEGIN_NAMESPACE(main_camera);
+            {
+                const std::uintptr_t typeinfo_ptr = get_typeinfo_for_klass(klass);
+
+                if (typeinfo_ptr != 0ull)
+                {
+                    ADD_FIELD_MEMBER(main_camera, "typeinfo", typeinfo_ptr);
+                    BREAK_LINE;
+                }
+
+                GENERATE_FIELD_MEMBER_BY_FIELD_CLASS(main_camera, instance, "Camera", "instance", FIELD_ATTRIBUTE_STATIC);
+                GENERATE_FIELD_MEMBER_BY_FIELD_CLASS(main_camera, camera_transform, "Transform", "camera_transform", FIELD_ATTRIBUTE_STATIC);
+            }
+            END_NAMESPACE(main_camera);
+        }
     }
-
-    void add_comment(const std::string &comment)
-    {
-        indent();
-        buffer << "// " << comment;
-    }
-
-    void add_field_offset(const std::string &field_name, const std::size_t& offset)
-    {
-        indent();
-        buffer << "static constexpr std::size_t " << field_name << " = 0x" << std::hex << std::uppercase << offset << ";";
-    }
-
-    void end_namespace()
-    {
-        --depth;
-        indent();
-        buffer << "}";
-        new_line();
-
-        if (depth == 0) new_line();
-    }
-
-	void write_to_buffer(const std::string& b)
-	{
-		buffer << b;
-	}
 }

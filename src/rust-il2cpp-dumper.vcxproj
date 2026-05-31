@@ -173,6 +173,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="dumper.hpp" />
+    <ClInclude Include="generators\cpp\codegen.hpp" />
+    <ClInclude Include="generators\cpp\field.hpp" />
+    <ClInclude Include="generators\cpp\instance.hpp" />
+    <ClInclude Include="generators\cpp\namespace.hpp" />
+    <ClInclude Include="il2cpp-tabledefs.hpp" />
     <ClInclude Include="macros.hpp" />
     <ClInclude Include="il2cpp-helpers.hpp" />
     <ClInclude Include="il2cpp-exports.hpp" />

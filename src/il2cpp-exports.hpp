@@ -9,6 +9,7 @@ namespace rust
     namespace il2cpp_exports
     {
         DEFINE_METHOD(il2cpp_init, void(*)(const char*));
+        DEFINE_METHOD(il2cpp_class_get_nested_types, Il2CppClass*(*)(Il2CppClass*, void**));
         DEFINE_METHOD(il2cpp_shutdown, void(*)());
         DEFINE_METHOD(il2cpp_domain_get, Il2CppDomain* (*)());
         DEFINE_METHOD(il2cpp_domain_get_assemblies, const Il2CppAssembly** (*)(const Il2CppDomain*, size_t*));
@@ -40,6 +41,7 @@ namespace rust
         DEFINE_METHOD(il2cpp_property_get_name, const char* (*)(const PropertyInfo*));
         DEFINE_METHOD(il2cpp_object_new, Il2CppObject* (*)(const Il2CppClass*));
         DEFINE_METHOD(il2cpp_object_get_class, Il2CppClass* (*)(Il2CppObject*));
+        DEFINE_METHOD(il2cpp_runtime_class_init, void(*)(Il2CppClass* klass));
         DEFINE_METHOD(il2cpp_object_unbox, void* (*)(Il2CppObject*));
         DEFINE_METHOD(il2cpp_runtime_invoke, Il2CppObject* (*)(const MethodInfo*, void*, void**, Il2CppException**));
         DEFINE_METHOD(il2cpp_resolve_icall, void* (*)(const char*));
@@ -48,11 +50,15 @@ namespace rust
         DEFINE_METHOD(il2cpp_array_length, il2cpp_array_size_t(*)(Il2CppArray*));
         DEFINE_METHOD(il2cpp_value_box, Il2CppObject* (*)(Il2CppClass*, void*));
         DEFINE_METHOD(il2cpp_gc_disable, void(*)());
+        DEFINE_METHOD(il2cpp_field_get_flags, int(*)(FieldInfo* field));
         DEFINE_METHOD(il2cpp_gc_enable, void(*)());
 
         inline void init()
         {
             INIT_METHOD(il2cpp_init);
+            INIT_METHOD(il2cpp_class_get_nested_types);
+            INIT_METHOD(il2cpp_runtime_class_init);
+            INIT_METHOD(il2cpp_field_get_flags);
             INIT_METHOD(il2cpp_shutdown);
             INIT_METHOD(il2cpp_domain_get);
             INIT_METHOD(il2cpp_domain_get_assemblies);
@@ -93,8 +99,6 @@ namespace rust
             INIT_METHOD(il2cpp_value_box);
             INIT_METHOD(il2cpp_gc_disable);
             INIT_METHOD(il2cpp_gc_enable);
-
-            console->debug("Initialized il2cpp methods.");
         }
     }
 }

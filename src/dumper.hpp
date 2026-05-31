@@ -7,32 +7,20 @@
 
 inline std::shared_ptr<spdlog::logger> console = spdlog::stdout_color_mt("logger_out");
 
+#define DEFINE_CLASS(namespace_name)              \
+    namespace namespace_name { void generate(); } \
+
 namespace rust
 {
-    inline Il2CppImage* assembly_csharp{ nullptr };
-    inline Il2CppThread* il2cpp_thread{ nullptr };
+    inline Il2CppImage *assembly_csharp = nullptr;
+    inline Il2CppThread *il2cpp_thread = nullptr;
 
-    namespace base_player
-    {
-        void generate();
-    }
+    inline std::shared_ptr<cppgen::codeblock> cpp_codegen = nullptr;
 
-    namespace generator
-    {
-        inline std::stringstream buffer{};
-
-        void begin_namespace(const std::string& name);
-        void add_comment(const std::string& comment);
-        void add_field_offset(const std::string& field_name, const std::size_t& offset);
-        void end_namespace();
-        void write_to_buffer(const std::string& b);
-        void new_line();
-
-        void show_output()
-        {
-            std::cout << buffer.str() << std::endl;
-        }
-    }
+    DEFINE_CLASS(base_networkable);
+    DEFINE_CLASS(main_camera);
+    DEFINE_CLASS(base_player);
+    DEFINE_CLASS(base_entity);
 
 	inline void setup_logger()
 	{
